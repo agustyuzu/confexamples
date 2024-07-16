@@ -89,7 +89,7 @@
         "balancingRule": [
             {
                 "tag": "leastping",
-                "fallback_tag": "sub",
+                "fallback_tag": "sub1",
                 "outbound_selector": [
                     "sub"
                 ],
