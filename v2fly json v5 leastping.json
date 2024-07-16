@@ -1,0 +1,193 @@
+{
+    "$schema": "https://github.com/EHfive/v2ray-jsonschema/raw/main/v5-config.schema.json",
+    "log": {
+        "access": {
+            "type": "Console",
+            "level": "Warning"
+        },
+        "error": {
+            "type": "Console",
+            "level": "Warning"
+        }
+    },
+    "dns": {
+        "tag": "dns",
+        "nameServer": [
+            {
+                "address": {
+                    "address": "114.114.114.114"
+                },
+                "geoDomain": [
+                    {
+                        "code": "cn"
+                    }
+                ]
+            },
+            {
+                "address": {
+                    "address": "1.1.1.1"
+                },
+                "geoDomain": [
+                    {
+                        "code": "geolocation-!cn"
+                    }
+                ]
+            }
+        ]
+    },
+    "router": {
+        "domainStrategy": "AsIs",
+        "rule": [
+            {
+                "protocol": [
+                    "bittorrent"
+                ],
+                "tag": "direct"
+            },
+            {
+                "portList": "443",
+                "networks": [
+                    "UDP"
+                ],
+                "tag": "block"
+            },
+            {
+                "geoDomain": [
+                    {
+                        "code": "category-ads-all"
+                    }
+                ],
+                "tag": "block"
+            },
+            {
+                "geoDomain": [
+                    {
+                        "code": "cn"
+                    },
+                    {
+                        "code": "geolocation-cn"
+                    }
+                ],
+                "tag": "direct"
+            },
+            {
+                "geoip": [
+                    {
+                        "code": "cn"
+                    },
+                    {
+                        "code": "private"
+                    }
+                ],
+                "tag": "direct"
+            },
+            {
+                "portList": "0-65535",
+                "balancingTag": "leastping"
+            }
+        ],
+        "balancingRule": [
+            {
+                "tag": "leastping",
+                "fallback_tag": "sub",
+                "outbound_selector": [
+                    "sub"
+                ],
+                "strategy": "leastping"
+            }
+        ]
+    },
+    "inbounds": [
+        {
+            "tag": "socks",
+            "protocol": "socks",
+            "port": 10808,
+            "listen": "127.0.0.1",
+            "settings": {
+                "udpEnabled": true
+            },
+            "sniffing": {
+                "enabled": true,
+                "destOverride": [
+                    "http",
+                    "tls",
+                    "quic"
+                ]
+            }
+        },
+        {
+            "tag": "http",
+            "protocol": "http",
+            "port": 10809,
+            "listen": "127.0.0.1",
+            "sniffing": {
+                "enabled": true,
+                "destOverride": [
+                    "http",
+                    "tls",
+                    "quic"
+                ]
+            }
+        }
+    ],
+    "outbounds": [
+        {
+            "tag": "sub1",
+            "protocol": "shadowsocks",
+            "settings": {
+                "address": "domain.name",
+                "method": "🥥🍊🍒",
+                "password": "🍎🍉🍇",
+                "port": 10017
+            }
+        },
+        {
+            "tag": "sub2",
+            "protocol": "shadowsocks",
+            "settings": {
+                "address": "1.2.3.4",
+                "method": "🥥🍊🍒",
+                "password": "🍎🍉🍇",
+                "port": 10039
+            }
+        },
+        {
+            "tag": "sub3",
+            "protocol": "shadowsocks",
+            "settings": {
+                "address": "ipv6 address",
+                "method": "🥥🍊🍒",
+                "password": "🍎🍉🍇",
+                "port": 10008
+            }
+        },
+        {
+            "tag": "direct",
+            "protocol": "freedom"
+        },
+        {
+            "tag": "block",
+            "protocol": "blackhole"
+        }
+    ],
+    "services": {
+        "stats": {},
+        "policy": {
+            "system": {
+                "stats": {
+                    "inboundDownlink": true,
+                    "inboundUplink": true,
+                    "outboundDownlink": true,
+                    "outboundUplink": true
+                }
+            }
+        },
+        "backgroundObservatory": {
+            "probeInterval": 5000000000,
+            "probeUrl": "https://www.google.com/generate_204",
+            "subjectSelector": [
+                "sub"
+            ]
+        }
+    }
+}
