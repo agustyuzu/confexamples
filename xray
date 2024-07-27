@@ -1,0 +1,12 @@
+#if you want to logrotate immediately:
+#sudo logrotate -d /etc/logrotate.d/xray
+/var/log/xray/*.log {
+        daily
+        rotate 14
+        missingok
+        copytruncate
+        dateext
+        nocompress
+        notifempty
+        create 0600 nobody nogroup
+}
